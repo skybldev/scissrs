@@ -1,6 +1,10 @@
 [package]
 name = "scissrs"
 version = "0.1.0"
+authors = ["skybldev"]
+description = "A string truncator and scroller."
+license-file = "LICENSE"
+repository = "https://github.com/skybldev/scissrs"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
