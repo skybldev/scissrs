@@ -30,6 +30,12 @@ fn main() {
             .required(false)
             .requires("listen")
             .help("Enables scrolling through truncated text (requires -l)"),
+        Arg::new("forever")
+            .short('f')
+            .takes_value(false)
+            .required(false)
+            .requires("scroll")
+            .help("Scroll forever even after EOF"),
         Arg::new("interval")
             .value_name("MS")
             .short('i')
@@ -58,6 +64,7 @@ fn main() {
 
     let listen_enabled = matches.is_present("listen");
     let scroll_enabled = matches.is_present("scroll");
+    let forever_enabled = matches.is_present("forever");
 
     let scroll_int: u64 = matches
         .value_of("interval")
@@ -90,7 +97,10 @@ fn main() {
         loop {
             match stdin.read_line(&mut buf) {
                 Ok(bytes) => {
-                    if bytes == 0 { return }
+                    if bytes == 0 {
+                        if forever_enabled { loop {} }
+                        else { return }
+                    }
                     let buf = String::from(buf.trim_end());
 
                     if buf.chars().count() > maxlen {
